@@ -36,7 +36,7 @@ check_fact(){
 
 if [[ $# -ge 1 ]];
 then
-        while IFS= read -r a; do
+        while IFS= read -r a || [ -n "$a" ]; do
                 res=$(factor "$a")
                 check_fact $res
         done < $file
