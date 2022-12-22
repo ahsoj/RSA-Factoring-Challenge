@@ -1,0 +1,46 @@
+#!/bin/env bash
+
+file="$1"
+
+check_fact(){
+        if [ $# -ne 3 ];
+        then
+                count=0
+                num2=1
+                for a in "$@";
+                do
+                        if [ $count -gt 1 ];
+                        then
+                                num2=$(echo $a*$num2 | bc)
+                        fi
+                        count=$((count + 1))
+                done
+        else
+                num2=$3
+        fi
+
+        num1=$2
+        num=$(echo "$1" | tr ':' '=')
+
+        result=$(echo "if($num2 > $num1) 1 else 0" | bc)
+                if ((result == 1)); then
+                        numcp=$num1
+                        num1=$num2
+                        num2=$numcp
+                fi
+
+        echo "$num$num1*$num2"
+}
+
+# '$#' start from index 0
+
+if [[ $# -ge 1 ]];
+then
+        while IFS= read -r a || [ -n "$a" ]; do
+                res=$(factor "$a")
+                check_fact $res
+        done < $file
+else
+        echo "Usage: $0 <file>"
+        exit 1
+fi
