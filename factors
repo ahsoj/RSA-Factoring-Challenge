@@ -11,7 +11,7 @@ check_fact(){
                 do
                         if [ $count -gt 1 ];
                         then
-                                num2=$(echo $a*$num2 | bc)
+                                num2=$(echo "$a"*"$num2" | bc)
                         fi
                         count=$((count + 1))
                 done
@@ -34,12 +34,12 @@ check_fact(){
 
 # '$#' start from index 0
 
-if [[ $# -ge 1 ]];
+if [ $# -ge 1 ];
 then
         while IFS= read -r a || [ -n "$a" ]; do
                 res=$(factor "$a")
                 check_fact $res
-        done < $file
+        done < "$file"
 else
         echo "Usage: $0 <file>"
         exit 1
